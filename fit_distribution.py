@@ -108,7 +108,7 @@ def fit_player(fantasy_points, player_name, ppr, bucket_size):
     # Find best fit distribution
     best_fit_name, best_fit_params, best_sse = best_fit_distribution(data, bins, ax)
     best_dist = getattr(st, best_fit_name)
-
+    player_name = player_name.replace(" ", "_")
     # Currently not saved, could add the all overlay in the future (or best n)?
     ax.set_ylim(dataYLim)
     ax.set_title(player_name + u"\n All Fitted Distributions")

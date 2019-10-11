@@ -9,7 +9,9 @@ def find_id(target_name, year):
     games = nflgame.games(year)
     for game in games:
         for player in game.max_player_stats():
-            if target_name == player.name:
+            name_and_pos = str(player.player)
+            full_name = name_and_pos.split("(")[0].strip()
+            if target_name == full_name:
                 ids_found.add(player.playerid)
     return ids_found
 
