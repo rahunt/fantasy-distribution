@@ -10,13 +10,14 @@ Graph a histogram of a player's Fantasy Football points as well as the best fitt
 
 ## How to use
 In venv: 
-   python ./get_stats.py --player "T.Lockett" --years 2018 2019 --ppr 0.5
+   python ./get_stats.py --player "Tyler Lockett" --years 2018 2019 --ppr 0.5
 
-Writes out a png in current dir : T.Lockett.png
+Writes out a png in current dir : Tyler_Lockett.png
 
-![Tyler Lockett 2018-2019](https://github.com/rahunt/fantasy-distribution/blob/master/T.Lockett.png)
+![Tyler Lockett 2018-2019](https://github.com/rahunt/fantasy-distribution/blob/master/Tyler_Lockett.png)
 
-![Alvin Kamara 2018-2019](https://github.com/rahunt/fantasy-distribution/blob/master/A.Kamara.png)
+![Alvin Kamara 2018-2019](https://github.com/rahunt/fantasy-distribution/blob/master/Alvin_Kamara.png)
 
 ## Known issues
-- D.Williams vs. D.Williams will just error out
+- Doesn't account for injuries
+- Lol rookies
