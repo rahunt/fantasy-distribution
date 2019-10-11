@@ -46,11 +46,20 @@ if __name__ == "__main__":
     parser.add_argument("--years", nargs="+")
     parser.add_argument("--ppr", help="default is half PPR", type=float)
     parser.add_argument("--player", help="player name", dest="player")
+    parser.add_argument(
+        "--bucket-size",
+        help="Bucket size in histogram is roughly this many fantasy points (Default 2)",
+        type=int,
+        dest="bucket_size",
+    )
     args = parser.parse_args()
     print(args)
     print("")
     player = args.player
     ppr = args.ppr
+    bucket_size = args.bucket_size
+    if bucket_size is None or bucket_size < 0:
+        bucket_size = 2
     if ppr is None:
         ppr = 0.5
     years = args.years
@@ -60,5 +69,5 @@ if __name__ == "__main__":
         for key, value in stats.items():
             points.append(score_stats.score(value, ppr))
         print(points)
-        dist_name = fit_distribution.fit_player(points, player, ppr)
+        dist_name = fit_distribution.fit_player(points, player, ppr, bucket_size)
         print(dist_name.name)

@@ -93,11 +93,11 @@ def make_pdf(dist, params, size=10000):
     return pdf
 
 
-def fit_player(fantasy_points, player_name, ppr):
+def fit_player(fantasy_points, player_name, ppr, bucket_size):
     # Load data from statsmodels datasets
     data = pd.Series(fantasy_points)
 
-    bins = int(max(fantasy_points) / 2)
+    bins = int(max(fantasy_points) / bucket_size)
     # Plot for comparison
     plt.figure(figsize=(12, 8))
     ax = data.plot(kind="hist", bins=bins, density=True, alpha=0.5)
