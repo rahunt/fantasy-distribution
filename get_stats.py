@@ -51,6 +51,8 @@ if __name__ == "__main__":
     print("")
     player = args.player
     ppr = args.ppr
+    if ppr is None:
+        ppr = 0.5
     years = args.years
     stats = multi_year_stats(player, years)
     if stats:
