@@ -3,9 +3,9 @@ Graph a histogram of a player's half PPR points as well as the best fitting dist
 
 
 ## Setup
-Use python3
-Set up a venv
-dependencies: nflgame,scipy,matplotlib,pandas,numpy,statsmodels
+- Use python3
+- Set up a venv
+- dependencies: nflgame,scipy,matplotlib,pandas,numpy,statsmodels
 
 
 ## How to use
@@ -19,5 +19,5 @@ Writes out a png in current dir : T.Lockett.png
 ![Alvin Kamara 2018-2019](https://github.com/rahunt/fantasy-distribution/blob/master/A.Kamara.png)
 
 ## Known issues
-D.Williams vs. D.Williams will just error out
-Matplot warnings due to deprecated args
+- D.Williams vs. D.Williams will just error out
+- Matplot warnings due to deprecated args
