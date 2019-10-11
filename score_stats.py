@@ -5,8 +5,8 @@ def safe_get(stats, key):
         return 0
 
 
-def score(stats):
-    rec_pts = safe_get(stats, "receiving_rec") * 0.5
+def score(stats, ppr):
+    rec_pts = safe_get(stats, "receiving_rec") * ppr
     yds_pts = 0.1 * (
         safe_get(stats, "receiving_yds") + safe_get(stats, "rushing_yds")
     ) + (0.04 * safe_get(stats, "passing_yds"))

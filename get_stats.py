@@ -22,14 +22,13 @@ def get_player_stats(target_id, year, per_game_stats):
                 per_game_stats[game.gamekey] = player.stats
 
 
-def multi_year_stats(player):
+def multi_year_stats(player, years):
     stats = {}
-    for year in [2018, 2019]:
-
+    for year in years:
+        year = int(year)
         ids = find_id(player, year)
         if len(ids) != 1:
-
-            print("Non-one id found")
+            print("Did not find exactly one id for player")
             print(year)
             print(ids)
             return None
@@ -44,20 +43,20 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Generate rough distributions of player points"
     )
-
-    parser.add_argument(
-        "--config-file", help="PATH to JSON config file", dest="config_file"
-    )
+    parser.add_argument("--years", nargs="+")
+    parser.add_argument("--ppr", help="default is half PPR", type=float)
     parser.add_argument("--player", help="player name", dest="player")
     args = parser.parse_args()
     print(args)
     print("")
     player = args.player
-    stats = multi_year_stats(player)
+    ppr = args.ppr
+    years = args.years
+    stats = multi_year_stats(player, years)
     if stats:
         points = []
         for key, value in stats.items():
-            points.append(score_stats.score(value))
+            points.append(score_stats.score(value, ppr))
         print(points)
-        dist_name = fit_distribution.fit_player(points, player)
+        dist_name = fit_distribution.fit_player(points, player, ppr)
         print(dist_name.name)
