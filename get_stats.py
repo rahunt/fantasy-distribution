@@ -71,5 +71,5 @@ if __name__ == "__main__":
         for key, value in stats.items():
             points.append(score_stats.score(value, ppr))
         print(points)
-        dist_name = fit_distribution.fit_player(points, player, ppr, bucket_size)
-        print(dist_name.name)
+        bfd = fit_distribution.fit_player(points, player, ppr, bucket_size)
+        print(bfd.dist_name)

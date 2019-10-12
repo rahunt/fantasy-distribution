@@ -85,15 +85,26 @@ def make_pdf(dist, params, size=10000):
         else dist.ppf(0.99, loc=loc, scale=scale)
     )
 
+    # NOTE: May need common x_axis to combine
+
     # Build PDF and turn into pandas Series
     x = np.linspace(start, end, size)
-    y = dist.pdf(x, loc=loc, scale=scale, *arg)
-    pdf = pd.Series(y, x)
+    pdf = dist.pdf(x, loc=loc, scale=scale, *arg)
+    pdf_series = pd.Series(pdf, x)
 
-    return pdf
+    return pdf, pdf_series
 
 
-def fit_player(fantasy_points, player_name, ppr, bucket_size):
+class Best_fit_result:
+    def __init__(self, pdf, distr, params, player_name):
+        self.pdf = pdf
+        self.distribution = distr
+        self.params = params
+        self.player_name = player_name
+        self.dist_name = distr.name
+
+
+def fit_player(fantasy_points, player_name, ppr, bucket_size, save_file=True):
     # Load data from statsmodels datasets
     data = pd.Series(fantasy_points)
 
@@ -108,6 +119,14 @@ def fit_player(fantasy_points, player_name, ppr, bucket_size):
     # Find best fit distribution
     best_fit_name, best_fit_params, best_sse = best_fit_distribution(data, bins, ax)
     best_dist = getattr(st, best_fit_name)
+
+    # Make PDF with best params
+    pdf, pdf_series = make_pdf(best_dist, best_fit_params)
+
+    result = Best_fit_result(pdf, best_dist, best_fit_params, player_name)
+    # Display
+    if not save_file:
+        return result
     player_name = player_name.replace(" ", "_")
     # Currently not saved, could add the all overlay in the future (or best n)?
     ax.set_ylim(dataYLim)
@@ -115,12 +134,8 @@ def fit_player(fantasy_points, player_name, ppr, bucket_size):
     ax.set_xlabel(str(ppr) + " PPR Points")
     ax.set_ylabel("Frequency")
 
-    # Make PDF with best params
-    pdf = make_pdf(best_dist, best_fit_params)
-
-    # Display
     plt.figure(figsize=(12, 8))
-    ax = pdf.plot(lw=2, label="Best Fit Distribution", legend=True)
+    ax = pdf_series.plot(lw=2, label="Best Fit Distribution", legend=True)
     data.plot(
         kind="hist",
         bins=bins,
@@ -146,4 +161,4 @@ def fit_player(fantasy_points, player_name, ppr, bucket_size):
     ax.set_xlabel(u"0.5 PPR Points")
     ax.set_ylabel("Frequency")
     plt.savefig(player_name + ".png")
-    return best_dist
+    return result
