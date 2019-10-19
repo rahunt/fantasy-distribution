@@ -72,7 +72,7 @@ def make_pdf(dist, params, size=10000):
     arg = params[:-2]
     loc = params[-2]
     scale = params[-1]
-
+    '''
     # Get sane start and end points of distribution
     start = (
         dist.ppf(0.01, *arg, loc=loc, scale=scale)
@@ -84,14 +84,17 @@ def make_pdf(dist, params, size=10000):
         if arg
         else dist.ppf(0.99, loc=loc, scale=scale)
     )
-
+    '''
     # NOTE: May need common x_axis to combine
-
+    start = 0
+    end = 50
     # Build PDF and turn into pandas Series
     x = np.linspace(start, end, size)
     pdf = dist.pdf(x, loc=loc, scale=scale, *arg)
+    print(pdf)
     pdf_series = pd.Series(pdf, x)
-
+    print(pdf_series)
+    
     return pdf, pdf_series
 
 
@@ -113,7 +116,7 @@ def fit_player(fantasy_points, player_name, ppr, bucket_size, save_file=True):
     plt.figure(figsize=(12, 8))
     ax = data.plot(kind="hist", bins=bins, density=True, alpha=0.5)
     # Save plot limits
-    ax.set_ylim(0, 10)
+    ax.set_ylim(0, 1)
     dataYLim = ax.get_ylim()
 
     # Find best fit distribution
@@ -135,7 +138,7 @@ def fit_player(fantasy_points, player_name, ppr, bucket_size, save_file=True):
     ax.set_ylabel("Frequency")
 
     plt.figure(figsize=(12, 8))
-    ax = pdf_series.plot(lw=2, label="Best Fit Distribution", legend=True)
+    ax = pdf_series.plot(lw=2, label=(player_name + ":BFD"), legend=True)
     data.plot(
         kind="hist",
         bins=bins,

@@ -3,18 +3,20 @@ import argparse
 import score_stats
 import fit_distribution
 
+def full_name(player_obj):
+    name_and_pos = str(player_obj.player)
+    return name_and_pos.split("(")[0].strip()
+    
 
 def find_id(target_name, year):
     ids_found = set()
     games = nflgame.games(year)
     for game in games:
         for player in game.max_player_stats():
-            name_and_pos = str(player.player)
-            full_name = name_and_pos.split("(")[0].strip()
-            if target_name == full_name:
+            name = full_name(player)
+            if target_name == name:
                 ids_found.add(player.playerid)
     return ids_found
-
 
 def get_player_stats(target_id, year, per_game_stats):
     games = nflgame.games(year)
@@ -22,7 +24,6 @@ def get_player_stats(target_id, year, per_game_stats):
         for player in game.max_player_stats():
             if target_id == player.playerid:
                 per_game_stats[game.gamekey] = player.stats
-
 
 def multi_year_stats(player, years):
     stats = {}
@@ -38,6 +39,33 @@ def multi_year_stats(player, years):
             target_id = ids.pop()
             get_player_stats(target_id, year, stats)
     return stats
+
+
+def multi_player_points(player_names,years,ppr):
+    ids_found = {}
+    stats = {}
+    for name in player_names:
+        ids_found[name] = set()
+        stats[name] = []
+    for year in years:
+        year = int(year)
+        games = nflgame.games(year)
+        for game in games:
+            for player in game.max_player_stats():
+                name = full_name(player)
+                if name in ids_found:
+                    ids_found[name].add(player.playerid)
+                    stats[name].append(score_stats.score(player.stats, ppr))
+    # check unique
+    should_return = True
+    for name in player_names:
+        if len(ids_found[name])!= 1:
+            should_return = False
+            print("unable to find unique id for player " + name + str(ids_found[name]))
+    if should_return :
+        return stats
+    else:
+        return None
 
 
 if __name__ == "__main__":
