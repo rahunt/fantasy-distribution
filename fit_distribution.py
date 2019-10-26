@@ -97,7 +97,7 @@ def fit_player(fantasy_points, player_name, ppr, bucket_size, save_file=None):
     # Load data from statsmodels datasets
     data = pd.Series(fantasy_points)
 
-    bins = max(10,int(max(fantasy_points) / bucket_size))
+    bins = max(10, int(max(fantasy_points) / bucket_size))
     # Plot for comparison
     plt.figure(figsize=(12, 8))
     ax = data.plot(kind="hist", bins=bins, density=True, alpha=0.5)
