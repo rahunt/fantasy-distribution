@@ -93,11 +93,11 @@ def make_pdf(dist, params, size=10000):
     return pdf
 
 
-def fit_player(fantasy_points, player_name, ppr, bucket_size):
+def fit_player(fantasy_points, player_name, ppr, bucket_size, save_file=None):
     # Load data from statsmodels datasets
     data = pd.Series(fantasy_points)
 
-    bins = int(max(fantasy_points) / bucket_size)
+    bins = max(10,int(max(fantasy_points) / bucket_size))
     # Plot for comparison
     plt.figure(figsize=(12, 8))
     ax = data.plot(kind="hist", bins=bins, density=True, alpha=0.5)
@@ -145,5 +145,9 @@ def fit_player(fantasy_points, player_name, ppr, bucket_size):
     ax.set_title(player_name + "\nWith best fit distribution: " + dist_str + sse_str)
     ax.set_xlabel(u"0.5 PPR Points")
     ax.set_ylabel("Frequency")
-    plt.savefig(player_name + ".png")
+    if save_file:
+        plt.savefig(save_file)
+    else:
+        plt.savefig(player_name + ".png")
+    plt.close(fig="all")
     return best_dist

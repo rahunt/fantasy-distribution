@@ -20,4 +20,5 @@ def score(stats, ppr):
     )
     int_pts = (-2) * safe_get(stats, "passing_ints")
     fum_pts = (-2) * safe_get(stats, "fumbles_lost")
+    kicking_pts = 6 * safe_get(stats,"kicking_fgm") - (3 * safe_get(stats,"kicking_fgm")) + safe_get(stats,"kicking_xpmade") - safe_get(stats,"kicking_xpmissed")
     return rec_pts + yds_pts + td_pts + tpm_pts
